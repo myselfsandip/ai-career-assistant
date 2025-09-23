@@ -1,6 +1,6 @@
 "use client"
 
-import DashboardCommand from "@/components/DashboardCommand";
+import DashboardCommand from "@/components/workspace/DashboardCommand";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { PanelLeftCloseIcon, PanelLeftIcon, SearchIcon } from "lucide-react";

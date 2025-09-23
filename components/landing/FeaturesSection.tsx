@@ -24,13 +24,13 @@ export default function FeaturesSection() {
                 "Upload your resume and get feedback to improve your chances.",
             redirectPath: "/ats-score",
         },
-        // {
-        //     icon: Mic,
-        //     title: "Mock Interviews",
-        //     description:
-        //         "Get AI-driven interview feedback to enhance your skills.",
-        //     redirectPath: "/mock-interviews",
-        // },
+        {
+            icon: Mic,
+            title: "Mock Interviews",
+            description:
+                "Get AI-driven interview feedback to enhance your skills.",
+            redirectPath: "/mock-interviews",
+        },
         {
             icon: Users,
             title: "Shortlist Top Talent",
@@ -44,12 +44,13 @@ export default function FeaturesSection() {
 
     return (
         <section id='features' className="bg-zinc-50 py-16 md:py-32 dark:bg-transparent">
-            <div className="@container mx-auto max-w-5xl px-6">
+            <div className="@container mx-auto  px-6">
                 <div className="text-center">
-                    <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Built to cover your needs</h2>
-                    <p className="mt-4">Libero sapiente aliquam quibusdam aspernatur, praesentium iusto repellendus.</p>
+                    <h2 className="text-balance text-4xl font-semibold lg:text-5xl">Everything you need to grow your career</h2>
+                    <p className="mt-4"> From crafting the perfect resume to acing interviews, our AI-powered tools
+                        support you at every step of your job search journey.</p>
                 </div>
-                <div className="@min-4xl:max-w-full @min-4xl:grid-cols-3 mx-auto mt-8 grid max-w-sm gap-6 *:text-center md:mt-16">
+                <div className="@min-4xl:max-w-full @min-4xl:grid-cols-4 mx-auto mt-8 grid max-w-sm gap-6 *:text-center md:mt-16">
 
 
                     {

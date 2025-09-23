@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-import DashboardUserButton from "../DashboardUserButton";
+import DashboardUserButton from "../workspace/DashboardUserButton";
+import { Logo } from "../logo";
 
 function DashboardSidebar() {
     const pathname = usePathname();
@@ -37,9 +38,7 @@ function DashboardSidebar() {
         <Sidebar>
             <SidebarHeader className="text-sidebar-accent-foreground">
                 <Link href="/" className="flex justify-center items-center gap-2 px-2 pt-2">
-                    <p className="text-2xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent tracking-tight">
-                        CareerAssist
-                    </p>
+                    <Logo />
                 </Link>
 
             </SidebarHeader>

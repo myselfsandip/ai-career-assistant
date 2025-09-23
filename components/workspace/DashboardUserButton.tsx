@@ -1,11 +1,12 @@
 "use client"
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useLogout } from "@/hooks/useLogout";
 import { ChevronDownIcon, CreditCard, LogOut, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 
 function DashboardUserButton() {
-    const router = useRouter();
+    const { logout, isPending } = useLogout();
 
     // Static user data for now
     const user = {
@@ -14,13 +15,8 @@ function DashboardUserButton() {
         initials: "JD"
     };
 
-    const handleLogout = () => {
-        // For now, just redirect to login
-        router.push('/login');
-    };
 
     const handleBilling = () => {
-        // Placeholder for billing page
         console.log('Navigate to billing');
     };
 
@@ -63,7 +59,7 @@ function DashboardUserButton() {
 
                 <DropdownMenuItem
                     className="cursor-pointer flex items-center justify-between"
-                    onClick={handleLogout}
+                    onClick={logout}
                 >
                     Logout
                     <LogOut className="size-4" />

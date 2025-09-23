@@ -58,7 +58,7 @@ export default function Navbar() {
                                         asChild
                                         variant="outline"
                                         size="sm">
-                                        <Link href="#">
+                                        <Link href="/login">
                                             <span>Login</span>
                                         </Link>
                                     </Button>

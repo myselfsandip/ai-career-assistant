@@ -8,36 +8,38 @@ import { EyeClosedIcon, EyeIcon, Github } from "lucide-react"
 import { useState, useTransition } from "react"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { useForm } from "react-hook-form"
-import { LoginFormData, loginSchema } from "@/lib/validations/auth";
+import { SignupFormData, signupSchema } from "@/lib/validations/auth";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from "sonner"
 import { authClient } from "@/lib/auth-client"
+import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
-export function LoginForm({
+export function SignupForm({
     className,
     ...props
 }: React.ComponentProps<"div">) {
 
     const [ispending, startTransition] = useTransition();
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const router = useRouter();
 
-    const form = useForm<LoginFormData>({
-        resolver: zodResolver(loginSchema),
+    const form = useForm<SignupFormData>({
+        resolver: zodResolver(signupSchema),
         defaultValues: {
+            name: '',
             email: '',
             password: '',
+            confirmPassword: '',
         }
     });
 
-
-    const onsubmit = (data: LoginFormData) => {
+    const onsubmit = (data: SignupFormData) => {
         startTransition(async () => {
-            const response = await authClient.signIn.email(data);
+            const response = await authClient.signUp.email(data);
 
             if (response.error) {
-                console.log("LOGIN:", response.error.status);
+                console.log("SIGN_UP:", response.error.status);
                 toast.error(response.error.message);
             } else {
                 router.push("/workspace/overview");
@@ -55,11 +57,31 @@ export function LoginForm({
                         <form onSubmit={form.handleSubmit(onsubmit)} className="p-6 md:p-8">
                             <div className="flex flex-col gap-6">
                                 <div className="flex flex-col items-center text-center">
-                                    <h1 className="text-2xl font-bold">Welcome back</h1>
+                                    <h1 className="text-2xl font-bold">Welcome</h1>
                                     <p className="text-muted-foreground text-balance">
-                                        Login to your account
+                                        Create a new Account
                                     </p>
                                 </div>
+                                <div className="grid gap-3">
+                                    <FormField
+                                        control={form.control}
+                                        name="name"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Name</FormLabel>
+                                                <FormControl>
+                                                    <Input
+                                                        type="text"
+                                                        placeholder="John Doe"
+                                                        disabled={ispending}
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+
                                 <div className="grid gap-3">
                                     <FormField
                                         control={form.control}
@@ -78,9 +100,8 @@ export function LoginForm({
                                             </FormItem>
                                         )}
                                     />
-
-
                                 </div>
+
                                 <div className="grid gap-3">
                                     <FormField
                                         control={form.control}
@@ -123,8 +144,47 @@ export function LoginForm({
                                         )}
                                     />
                                 </div>
+                                <div className="grid gap-3">
+                                    <FormField
+                                        control={form.control}
+                                        name="confirmPassword"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <div className="flex items-center">
+                                                    <FormLabel>Confirm Password</FormLabel>
+                                                </div>
+                                                <FormControl>
+                                                    <div className="relative">
+                                                        <Input
+                                                            type={showConfirmPassword ? "text" : "password"}
+                                                            placeholder="Enter Confirm Password"
+                                                            disabled={ispending}
+                                                            {...field}
+                                                        />
+                                                        <Button
+                                                            type="button"
+                                                            variant="ghost"
+                                                            className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                                            onClick={() => setShowConfirmPassword((prev) => !prev)}
+
+                                                        >
+                                                            {showConfirmPassword ? (
+                                                                <EyeIcon className="size-4" aria-hidden="true" />
+                                                            ) : (
+                                                                <EyeClosedIcon className="size-4" aria-hidden="true" />
+                                                            )}
+                                                        </Button>
+                                                    </div>
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+
+
                                 <Button disabled={ispending} type="submit" className="w-full">
-                                    Login
+                                    Sign Up
                                 </Button>
                                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                                     <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -148,9 +208,9 @@ export function LoginForm({
                                     </Button>
                                 </div>
                                 <div className="text-center text-sm">
-                                    Don&apos;t have an account?{" "}
-                                    <a href="/signup" className="underline underline-offset-4">
-                                        Sign up
+                                    Already have an account?{" "}
+                                    <a href="/login" className="underline underline-offset-4">
+                                        Login
                                     </a>
                                 </div>
                             </div>

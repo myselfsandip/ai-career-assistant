@@ -1,5 +1,5 @@
 "use client"
-import { HomeIcon, FileTextIcon, CheckCircleIcon, UsersIcon } from "lucide-react";
+import { HomeIcon, FileTextIcon, CheckCircleIcon, UsersIcon, FileEditIcon, FileUserIcon } from "lucide-react";
 import { SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, Sidebar } from "@/components/ui/sidebar";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -18,20 +18,25 @@ function DashboardSidebar() {
             href: "/workspace/overview"
         },
         {
-            icon: FileTextIcon,
-            label: "Resume & Cover Letter",
+            icon: FileUserIcon,
+            label: "Generate Resume",
             href: "/workspace/resume"
+        },
+        {
+            icon: FileEditIcon,
+            label: "Generate Cover Letter",
+            href: "/workspace/cover-letter"
         },
         {
             icon: CheckCircleIcon,
             label: "ATS Score Checker",
             href: "/workspace/ats-score"
         },
-        {
-            icon: UsersIcon,
-            label: "Hire Talent",
-            href: "/workspace/hire"
-        }
+        // {
+        //     icon: UsersIcon,
+        //     label: "Hire Talent",
+        //     href: "/workspace/hire"
+        // }
     ];
 
     return (
@@ -51,8 +56,8 @@ function DashboardSidebar() {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {mainFeatures.map((item) => (
-                                <SidebarMenuItem key={item.href}>
+                            {mainFeatures.map((item, idx) => (
+                                <SidebarMenuItem key={idx}>
                                     <SidebarMenuButton
                                         asChild
                                         className={cn(

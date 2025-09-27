@@ -33,7 +33,7 @@ function DashboardNavbar() {
                     </Button>
 
                     <Button
-                        className="h-9 w-[240px] justify-start font-normal text-muted-foreground hover:text-muted-foreground"
+                        className="h-9 w-[240px] justify-start font-normal text-muted-foreground hover:text-muted-foreground ml-4"
                         variant="outline"
                         size="sm"
                         onClick={() => setCommandOpen((open) => !open)}

@@ -1,5 +1,5 @@
-import FooterSection from '@/components/landing/Footer';
-import Navbar from '@/components/landing/Navbar';
+import FooterSection from '@/components/home/Footer';
+import Navbar from '@/components/home/Navbar';
 import React from 'react'
 
 const layout = ({

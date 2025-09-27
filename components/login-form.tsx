@@ -35,7 +35,6 @@ export function LoginForm({
     const onsubmit = (data: LoginFormData) => {
         startTransition(async () => {
             const response = await authClient.signIn.email(data);
-
             if (response.error) {
                 console.log("LOGIN:", response.error.status);
                 toast.error(response.error.message);

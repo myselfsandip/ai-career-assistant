@@ -9,17 +9,17 @@ const GenerateResumeHeader = () => {
     const [resumeTitle, setResumeTitle] = useState("Untittled Document");
 
     return (
-        <div className='flex justify-between px-4'>
-            <div className='flex gap-2 items-center'>
+        <div className='grid md:grid-cols-2 sm:grid-cols-1 gap-6'>
+            <div className='flex gap-6 items-center'>
                 <FileText />
-                <Input  value={resumeTitle} type='text' onChange={(e) => setResumeTitle(e.target.value)} />
+                <Input className='w-auto'  value={resumeTitle} type='text' onChange={(e) => setResumeTitle(e.target.value)} />
                 <Lock />
             </div>
-            <div className='flex gap-3'>
+            <div className='flex flex-wrap md:flex-row sm:flex-col items-center gap-3'>
                 <Button><Palette className='size-4' />Theme</Button>
                 <Button><EyeIcon className='size-4' />Preview</Button>
-                <Button><DownloadCloudIcon className='size-4' />Download Resume</Button>
                 <Button><Share className='size-4' />Share</Button>
+                <Button><DownloadCloudIcon className='size-4' />Download Resume</Button>
                 <Button><MoreHorizontal className='size-4' /></Button>
             </div>
         </div> 

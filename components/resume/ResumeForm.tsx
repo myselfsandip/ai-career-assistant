@@ -9,8 +9,8 @@ const ResumeForm = () => {
     return (
         <div>
             <Card className='w-full max-w-lg'>
-                <div className='flex justify-end px-4 py-2 border-b'>
-                    <Button>Next</Button>
+                <div className='flex justify-end px-4 pb-3 border-b'>
+                    <Button variant="outline" size="sm">Next</Button>
                 </div>
                 <CardHeader>
                     <CardTitle>Personal Information</CardTitle>
@@ -19,7 +19,7 @@ const ResumeForm = () => {
                     </CardDescription>
                 </CardHeader>
 
-                <CardContent className='grid p-0 md:grid-cols-2'>
+                <CardContent className='grid p-0 '>
                     <PersonalInfoForm />
                 </CardContent>
             </Card>

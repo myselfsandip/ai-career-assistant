@@ -1,8 +1,12 @@
-import React from 'react'
+import { caller } from "@/server/trpc/server";
 
-const page = () => {
+const page = async () => {
+
+    const result = await caller.resume.hello({
+        text: 'Sandip Singha'
+    })
     return (
-        <div>List page</div>
+        <div>{result?.greeting}</div>
     )
 }
 

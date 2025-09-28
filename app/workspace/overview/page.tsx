@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { requireAuth } from '@/lib/check-auth';
-import { caller } from '@/trpc/server';
 import {
     FileUserIcon,
     FileEditIcon,

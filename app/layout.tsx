@@ -23,8 +23,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
+  modal
 }: Readonly<{
   children: React.ReactNode;
+  modal: React.ReactNode
 }>) {
   return (
     <TRPCReactProvider>
@@ -41,6 +43,7 @@ export default function RootLayout({
 
             {children}
             <Toaster position="top-right" richColors />
+            {modal}
           </ThemeProvider>
         </body>
       </html>

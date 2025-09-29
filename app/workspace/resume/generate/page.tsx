@@ -1,8 +1,10 @@
 import GenerateResumeHeader from '@/components/resume/GenerateResumeHeader';
 import ResumeForm from '@/components/resume/ResumeForm';
+import { requireAuth } from '@/lib/check-auth';
 import React from 'react'
 
-const page = () => {
+const page = async () => {
+    await requireAuth();
     return (
         <div className='flex flex-col gap-6'>
             <GenerateResumeHeader />

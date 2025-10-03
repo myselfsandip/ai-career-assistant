@@ -3,9 +3,16 @@
 import DashboardCommand from "@/components/workspace/DashboardCommand";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
-import { PanelLeftCloseIcon, PanelLeftIcon, SearchIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { PanelLeftCloseIcon, PanelLeftIcon, UserIcon } from "lucide-react";
+import { Fragment, useEffect, useState } from "react";
 import { ModeToggle } from "../mode-toggle";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { useLogout } from "@/hooks/useLogout";
 
 function DashboardNavbar() {
     const { state, toggleSidebar, isMobile } = useSidebar();
@@ -23,6 +30,8 @@ function DashboardNavbar() {
         return () => document.removeEventListener("keydown", down);
     }, [])
 
+    const { logout } = useLogout();
+
     return (
         <>
             <DashboardCommand open={commandOpen} setOpen={setCommandOpen} />
@@ -31,22 +40,26 @@ function DashboardNavbar() {
                     <Button variant="outline" className="size-9 cursor-pointer" onClick={toggleSidebar}>
                         {(state === 'collapsed' || isMobile) ? <PanelLeftIcon className="size-4" /> : <PanelLeftCloseIcon className="size-4" />}
                     </Button>
-
-                    <Button
-                        className="h-9 w-[240px] justify-start font-normal text-muted-foreground hover:text-muted-foreground ml-4"
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setCommandOpen((open) => !open)}
-                    >
-                        <SearchIcon />
-                        Search
-                        <kbd className="ml-auto pointer-events-none inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
-                            <span className="text-xs">&#8984;</span>K
-                        </kbd>
-                    </Button>
                 </div>
-                <div className="pr-3">
+                <div className="pr-3 flex gap-4 items-center">
                     <ModeToggle />
+                    <div>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="outline" size="icon">
+                                    <UserIcon />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem onClick={() => { }}>
+                                    Profile
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={logout}>
+                                    Logout
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                    </div>
                 </div>
             </nav>
         </>

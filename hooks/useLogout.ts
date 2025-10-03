@@ -1,14 +1,12 @@
 "use client";
 
 import { useTransition } from "react";
-import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { authClient } from "@/lib/auth-client";
 import { useQueryClient } from "@tanstack/react-query";
 
 export function useLogout() {
     const [isPending, startTransition] = useTransition();
-    const router = useRouter();
     const queryClient = useQueryClient();
 
     const logout = () => {
@@ -20,7 +18,7 @@ export function useLogout() {
             } else {
                 queryClient.clear(); //Clear Cache
                 toast.success("Logged out successfully");
-                router.push("/login");
+                window.location.href = '/login'; //using this instead of next/navigation to bypass login modal opening 
             }
         });
     };

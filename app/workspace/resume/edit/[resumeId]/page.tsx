@@ -1,9 +1,12 @@
 import GenerateResumeHeader from '@/components/resume/GenerateResumeHeader';
 import ResumeForm from '@/components/resume/ResumeForm';
+import ResumePreview from '@/components/resume/ResumePreview';
 import { requireAuth } from '@/lib/check-auth';
 import React from 'react'
 
-const page = async () => {
+const page = async ({ params, }: { params: Promise<{ resumeId: string }> }) => {
+
+    const resumeId = (await params).resumeId;
     await requireAuth();
     return (
         <div className='flex flex-col gap-6'>
@@ -13,9 +16,9 @@ const page = async () => {
                     <ResumeForm />
                 </div>
                 <div className='w-full min-w-0 px-4 rounded-lg min-h-[600px]'>
-                    <h3 className='text-lg font-semibold mb-4'>Resume Preview</h3>
-                    <div className='bg-white p-4 rounded shadow-sm min-h-[500px]'>
-                        Resume PDF content goes here
+                    <h3 className='text-lg font-semibold mb-4'>Resume Preview | ID: {resumeId}</h3>
+                    <div className='bg-white shadow-sm min-h-[500px] flex'>
+                        <ResumePreview />
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 "use client"
 
+import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -7,10 +8,15 @@ import { cn } from "@/lib/utils";
 import { personalInfoSchema, personalInfoType } from "@/lib/validations/resume";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
+import { OctagonAlertIcon } from "lucide-react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
 export default function PersonalInfoForm() {
+
+    const [error, setError] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
 
 
     const form = useForm<personalInfoType>({
@@ -26,9 +32,9 @@ export default function PersonalInfoForm() {
         }
     });
 
-// const addPersonalInfo = useMutation({
-//     mutationFn:
-// })
+    // const addPersonalInfo = useMutation({
+    //     mutationFn:
+    // })
 
     const onSubmit = (values: personalInfoType) => {
         //
@@ -44,7 +50,7 @@ export default function PersonalInfoForm() {
                             control={form.control}
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Email</FormLabel>
+                                    <FormLabel>Name</FormLabel>
                                     <FormControl>
                                         <Input
                                             type="text"
@@ -197,6 +203,13 @@ export default function PersonalInfoForm() {
                             )}
                         />
                     </div>
+
+                    {!!error && (
+                        <Alert className="bg-destructive/10 border-none">
+                            <OctagonAlertIcon className="h-4 w-4 !text-destructive" />
+                            <AlertTitle>{error}</AlertTitle>
+                        </Alert>
+                    )}
 
 
                     <div className="flex items-center justify-start">

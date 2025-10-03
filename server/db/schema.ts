@@ -91,7 +91,7 @@ export const resumes = pgTable('resumes', {
 
     // Sharing
     isPublic: boolean('is_public').default(false),
-    shareToken: text('share_token'), // For public sharing
+    shareToken: text('share_token'),
     shareExpiresAt: timestamp('share_expires_at'),
 
     createdAt: timestamp('created_at').defaultNow().notNull(),
@@ -188,38 +188,38 @@ export const projects = pgTable('projects', {
         .notNull(),
 });
 
-export const coverLetters = pgTable('cover_letters', {
-    id: text('id').primaryKey().$default(() => nanoid()),
-    userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }).notNull(),
-    resumeId: text('resume_id').references(() => resumes.id).notNull(), // Link to specific resume
+// export const coverLetters = pgTable('cover_letters', {
+//     id: text('id').primaryKey().$default(() => nanoid()),
+//     userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }).notNull(),
+//     resumeId: text('resume_id').references(() => resumes.id).notNull(), // Link to specific resume
 
-    title: text('title').notNull(),
-    jobTitle: text('job_title').notNull(),
-    company: text('company').notNull(),
-    content: text('content').notNull(),
-    jobDescription: text('job_description'),
+//     title: text('title').notNull(),
+//     jobTitle: text('job_title').notNull(),
+//     company: text('company').notNull(),
+//     content: text('content').notNull(),
+//     jobDescription: text('job_description'),
 
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-    updatedAt: timestamp('updated_at')
-        .defaultNow()
-        .$onUpdate(() => new Date())
-        .notNull(),
-});
+//     createdAt: timestamp('created_at').defaultNow().notNull(),
+//     updatedAt: timestamp('updated_at')
+//         .defaultNow()
+//         .$onUpdate(() => new Date())
+//         .notNull(),
+// });
 
-export const atsScores = pgTable('ats_scores', {
-    id: text('id').primaryKey().$default(() => nanoid()),
-    userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }).notNull(),
-    resumeId: text('resume_id').references(() => resumes.id, { onDelete: 'cascade' }).notNull(),
+// export const atsScores = pgTable('ats_scores', {
+//     id: text('id').primaryKey().$default(() => nanoid()),
+//     userId: text('user_id').references(() => user.id, { onDelete: 'cascade' }).notNull(),
+//     resumeId: text('resume_id').references(() => resumes.id, { onDelete: 'cascade' }).notNull(),
 
-    jobDescription: text('job_description').notNull(),
-    score: integer('score').notNull(), // 0-100
+//     jobDescription: text('job_description').notNull(),
+//     score: integer('score').notNull(), // 0-100
 
-    feedback: json('feedback').$type<{
-        strengths: string[];
-        improvements: string[];
-        missingKeywords: string[];
-        suggestions: string[];
-    }>(),
+//     feedback: json('feedback').$type<{
+//         strengths: string[];
+//         improvements: string[];
+//         missingKeywords: string[];
+//         suggestions: string[];
+//     }>(),
 
-    createdAt: timestamp('created_at').defaultNow().notNull(),
-});
+//     createdAt: timestamp('created_at').defaultNow().notNull(),
+// });

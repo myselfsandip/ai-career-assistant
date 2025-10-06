@@ -1,8 +1,7 @@
 "use client"
 
 import ResumeItemList from "@/components/resume/ResumeItemList"
-import { Button } from "@/components/ui/button"
-import { Trash2Icon } from "lucide-react"
+import { Input } from "@/components/ui/input"
 
 
 
@@ -21,10 +20,9 @@ const Page = () => {
                             Create your own custom resume with AI & Subscribe to the channel
                         </p>
                     </div>
-                    <Button variant="outline" size="lg">
-                        <Trash2Icon className="w-4 h-4 mr-2" />
-                        Trash
-                    </Button>
+                    <div>
+                        <Input placeholder="Search Resume" />
+                    </div>
                 </div>
 
                 {/* All resumes */}

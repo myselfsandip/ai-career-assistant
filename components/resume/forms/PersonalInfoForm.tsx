@@ -4,19 +4,19 @@ import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useResumeContext } from "@/context/resume-info-provider";
 import { cn } from "@/lib/utils";
 import { personalInfoSchema, personalInfoType } from "@/lib/validations/resume";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
 import { OctagonAlertIcon } from "lucide-react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 
 export default function PersonalInfoForm() {
-
+    const {onUpdate,} = useResumeContext();
     const [error, setError] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(false);
+
 
 
     const form = useForm<personalInfoType>({
@@ -32,9 +32,6 @@ export default function PersonalInfoForm() {
         }
     });
 
-    // const addPersonalInfo = useMutation({
-    //     mutationFn:
-    // })
 
     const onSubmit = (values: personalInfoType) => {
         //

@@ -29,7 +29,14 @@ export default function ResumeItemList() {
         createResume.mutate();
     }
 
-    const { data, isPending, isError } = useQuery(trpc.resume.getAll.queryOptions());
+    const { data, isPending, isError } = useQuery({
+        ...trpc.resume.getAll.queryOptions(),
+        staleTime: 5 * 60 * 1000,
+        gcTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: false,
+        refetchOnMount: false,
+        refetchOnReconnect: true,
+    });
 
     return (
         <>

@@ -1,12 +1,24 @@
-import React from 'react'
+"use client"
+
 import { INITIAL_THEME_COLOR } from '@/constants/colors'
 import { Skeleton } from '../ui/skeleton';
+import { useResumeContext } from '@/context/resume-info-provider';
 
 function ResumePreview() {
 
+    const { resumeInfo, isLoading } = useResumeContext();
+
     return (
-        <section className='flex-1 text-black '>
-            <div className='h-[20px]' style={{ backgroundColor: INITIAL_THEME_COLOR }}></div>
+        <section id='resume-preview-id' className='bg-white shadow-sm min-h-[500px] flex flex-col gap-6'>
+            <div className='w-full h-4' style={{ backgroundColor: INITIAL_THEME_COLOR }}></div>
+            <div className='w-full min-h-14'>
+                <h2 className="font-bold text-xl text-center"
+                    style={{
+                        color: INITIAL_THEME_COLOR,
+                    }}>
+                    {resumeInfo?.fullname ?? ''}
+                </h2>
+            </div>
         </section>
     )
 }

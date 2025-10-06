@@ -1,9 +1,11 @@
-import { pgTable, text, timestamp, boolean, json, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, json, integer, pgEnum } from "drizzle-orm/pg-core";
 import { nanoid } from "nanoid";
 
-// Better-auth tables (keep as is)
+export const userRoleEnum = pgEnum("user_role", ["admin", "user"]);
+
 export const user = pgTable("user", {
     id: text('id').primaryKey().$default(() => nanoid()),
+    role: userRoleEnum('role').notNull().default('user'),
     name: text("name").notNull(),
     email: text("email").notNull().unique(),
     emailVerified: boolean("email_verified").default(false).notNull(),

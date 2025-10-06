@@ -1,34 +1,21 @@
-"use client"
 
-import { useRouter } from "next/navigation"
-import {
-    Dialog,
-    DialogContent,
-} from "@/components/ui/dialog"
-import { DialogTitle } from "@radix-ui/react-dialog";
-import { VisuallyHidden } from "@radix-ui/react-visually-hidden"
-import { SignupForm } from "@/components/signup-form";
 
-function SignUpFormModal() {
-    const router = useRouter();
+import React from 'react'
+import { auth } from '@/lib/auth';
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import SignUpFormModal from './SignUpFormModal';
 
+export default async function page() {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    });
+
+    if (!!session) {
+        redirect('/workspace/overview');
+    }
     return (
-        <Dialog
-            defaultOpen
-            onOpenChange={(open) => {
-                if (!open) {
-                    router.back()
-                }
-            }}
-        >
-            <DialogContent>
-                <VisuallyHidden>
-                    <DialogTitle>Login to your account</DialogTitle>
-                </VisuallyHidden>
-                <SignupForm isModal={true} />
-            </DialogContent>
-        </Dialog>
+        <SignUpFormModal />
     )
 }
 
-export default SignUpFormModal

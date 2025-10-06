@@ -10,6 +10,10 @@ export const personalInfoSchema = z.object({
     website: z.string().trim().url({ message: 'Invalid website URL' }).optional(),
 });
 
+export const addPersonalInfoSchema = personalInfoSchema.extend({
+    resumeId: z.string().trim().min(1, { message: 'Resume ID is required' }),
+});
+
 export type personalInfoType = z.infer<typeof personalInfoSchema>;
 
 

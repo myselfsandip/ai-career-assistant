@@ -4,8 +4,8 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import { EyeClosedIcon, EyeIcon, Github } from "lucide-react"
-import { useState, useTransition } from "react"
+import { EyeClosedIcon, EyeIcon, Github, OctagonAlertIcon } from "lucide-react"
+import { useEffect, useState, useTransition } from "react"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "./ui/form"
 import { useForm } from "react-hook-form"
 import { SignupFormData, signupSchema } from "@/lib/validations/auth";
@@ -14,6 +14,8 @@ import { authClient } from "@/lib/auth-client"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
+import { Turnstile } from "@marsidev/react-turnstile"
+import { Alert, AlertTitle } from "./ui/alert"
 
 export function SignupForm({
     isModal = false,
@@ -24,10 +26,31 @@ export function SignupForm({
     className?: string;
 } & React.HTMLAttributes<HTMLDivElement>) {
 
+    const router = useRouter();
     const [ispending, startTransition] = useTransition();
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-    const router = useRouter();
+    const [clientIp, setClientIp] = useState<string>('');
+    const [captchaToken, setCaptchaToken] = useState<string>('');
+    const [error, setError] = useState<string | null>(null);
+
+
+
+    useEffect(() => {
+        const getClientIP = async () => {
+            try {
+                const response = await fetch('/api/get-ip');
+                if (response.ok) {
+                    const { ip } = await response.json();
+                    setClientIp(ip);
+                }
+            } catch (error) {
+                //
+            }
+        };
+
+        getClientIP();
+    }, []);
 
     const form = useForm<SignupFormData>({
         resolver: zodResolver(signupSchema),
@@ -41,13 +64,26 @@ export function SignupForm({
 
     const onsubmit = (data: SignupFormData) => {
         startTransition(async () => {
-            const response = await authClient.signUp.email(data);
+            if (!captchaToken) {
+                setError("Please complete the captcha verification");
+                return;
+            }
 
-            if (response.error) {
-                console.log("SIGN_UP:", response.error.status);
-                toast.error(response.error.message);
-            } else {
+            setError(null);
+            try {
+                await authClient.signUp.email({
+                    ...data,
+                    fetchOptions: {
+                        headers: {
+                            "x-captcha-response": captchaToken,
+                            "x-captcha-user-remote-ip": clientIp,
+                        },
+                    }
+                })
                 router.push("/workspace/overview");
+            } catch (error: any) {
+                setError(error.message || "An unexpected error occurred");
+                setCaptchaToken('');
             }
         });
     }
@@ -66,6 +102,21 @@ export function SignupForm({
             })
         }
     }
+
+
+    const handleCaptchaSuccess = (token: string) => {
+        setCaptchaToken(token);
+        setError(null);
+    };
+
+    const handleCaptchaError = () => {
+        setCaptchaToken('');
+        setError("Captcha verification failed. Please try again.");
+    };
+
+    const handleCaptchaExpire = () => {
+        setCaptchaToken('');
+    };
 
 
     if (isModal) {
@@ -200,8 +251,24 @@ export function SignupForm({
                         />
                     </div>
 
+                    <div className="flex justify-center">
+                        <Turnstile
+                            siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                            onSuccess={handleCaptchaSuccess}
+                            onError={handleCaptchaError}
+                            onExpire={handleCaptchaExpire}
+                        />
+                    </div>
 
-                    <Button disabled={ispending} type="submit" className="w-full">
+                    {!!error && (
+                        <Alert className="bg-destructive/10 border-none">
+                            <OctagonAlertIcon className="h-4 w-4 !text-destructive" />
+                            <AlertTitle>{error}</AlertTitle>
+                        </Alert>
+                    )}
+
+
+                    <Button disabled={ispending || !captchaToken} type="submit" className="w-full">
                         Sign Up
                     </Button>
                     <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
@@ -377,8 +444,24 @@ export function SignupForm({
                                     />
                                 </div>
 
+                                <div className="flex justify-center">
+                                    <Turnstile
+                                        siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY!}
+                                        onSuccess={handleCaptchaSuccess}
+                                        onError={handleCaptchaError}
+                                        onExpire={handleCaptchaExpire}
+                                    />
+                                </div>
 
-                                <Button disabled={ispending} type="submit" className="w-full">
+                                {!!error && (
+                                    <Alert className="bg-destructive/10 border-none">
+                                        <OctagonAlertIcon className="h-4 w-4 !text-destructive" />
+                                        <AlertTitle>{error}</AlertTitle>
+                                    </Alert>
+                                )}
+
+
+                                <Button disabled={ispending || !captchaToken} type="submit" className="w-full">
                                     Sign Up
                                 </Button>
                                 <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
@@ -410,9 +493,9 @@ export function SignupForm({
                                 </div>
                                 <div className="text-center text-sm">
                                     Already have an account?{" "}
-                                    <Link href="/login" className="underline underline-offset-4">
+                                    <a href="/login" className="underline underline-offset-4">
                                         Login
-                                    </Link>
+                                    </a>
                                 </div>
                             </div>
                         </form>

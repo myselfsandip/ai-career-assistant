@@ -20,6 +20,7 @@ import Link from 'next/link';
 export default async function page() {
     await requireAuth();
 
+
     return (
         <div className='px-4 py-2'>
             {/* Welcome Header */}

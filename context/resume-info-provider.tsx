@@ -1,9 +1,8 @@
 "use client"
 
 import { ResumeType, UpdateResumeType } from "@/lib/validations/resume";
-import { trpc } from "@/server/trpc/server";
+import { useTRPC } from "@/server/trpc/client";
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
 import { useState, createContext, useContext, FC, ReactNode, useEffect } from "react";
 
 
@@ -22,14 +21,17 @@ export const ResumeInfoContext = createContext<ResumeContextType | undefined>(
 
 
 
-export const ResumeInfoProvider: FC<{ children: ReactNode }> = ({ children }: { children: ReactNode }) => {
-    const params = useParams();
-    const resumeId = params.resumeId as string;
-    const { data, isSuccess, isError, isLoading, refetch } = useQuery(trpc.resume.getOne.queryOptions({ resumeId }));
+export const ResumeInfoProvider: FC<{ resumeId: string, children: ReactNode }> = ({ resumeId, children }: { resumeId: string, children: ReactNode }) => {
+    const trpc = useTRPC();
+    const { data, isSuccess, isError, isLoading, refetch } = useQuery(trpc.resume.getOne.queryOptions({
+        resumeId: resumeId
+    }));
     const [resumeInfo, setResumeInfo] = useState<ResumeType>();
     useEffect(() => {
-        if (isSuccess) setResumeInfo(data);
-    }, [isSuccess]);
+        if (isSuccess && data) {
+            setResumeInfo(data)
+        }
+    }, [isSuccess, data]);
 
     const onUpdate = (updateData: UpdateResumeType) => {
         setResumeInfo((prev) => prev ? { ...prev, ...updateData } : prev);
